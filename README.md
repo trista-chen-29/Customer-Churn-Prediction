@@ -1,8 +1,8 @@
 # Customer-Churn-Prediction
 
 👥 Team Members
-Trista Chen — trista.chen@sjsu.edu
-Sonal Rana — sonal.rana@sjsu.edu
+- Trista Chen — trista.chen@sjsu.edu
+- Sonal Rana — sonal.rana@sjsu.edu
 
 ---
 
