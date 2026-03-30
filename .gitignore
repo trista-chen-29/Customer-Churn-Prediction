@@ -1,0 +1,14 @@
+# Ignore virtual environment and Python cache files
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Ignore macOS files
+.DS_Store
+
+# Ignore everything in data
+data/*
+
+# BUT allow this file
+!data/.gitkeep
