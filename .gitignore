@@ -8,7 +8,13 @@ __pycache__/
 .DS_Store
 
 # Ignore everything in data
+# Ignore everything in data
 data/*
 
-# BUT allow this file
-!data/.gitkeep
+# Allow folder structure
+!data/raw/
+!data/processed/
+
+# Allow CSV files inside those folders
+!data/raw/*.csv
+!data/processed/*.csv
