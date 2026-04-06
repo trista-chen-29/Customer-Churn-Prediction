@@ -117,6 +117,23 @@ http://127.0.0.1:8000/docs
 
 ---
 
+### API Endpoint
+
+**POST** `/predict`
+
+Example input:
+
+```json
+{
+  "tenure": 12,
+  "monthly_charges": 79.99,
+  "contract": "Month-to-month",
+  "internet_service": "Fiber optic"
+}
+```
+
+---
+
 ## 🚀 Current Implementation Progress
 
 - Created shared GitHub repository
