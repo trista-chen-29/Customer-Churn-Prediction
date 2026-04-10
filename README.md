@@ -75,8 +75,41 @@ This dataset will allow us to:
   - Classifies risk (Low / Medium / High)  
   - Provides retention recommendations  
 
----
+**************************
+Exploratory Data Analysis (EDA)
+EDA was performed to understand patterns influencing churn.
 
+Key Observations:
+Customers with month-to-month contracts have the highest churn
+Low tenure customers are more likely to churn
+Customers with higher monthly charges show higher churn tendency
+Lack of tech support, online security, and device protection is associated with churn
+Fiber optic users show higher churn behavior
+
+See: notebooks/eda.ipynb
+Model Development
+-Feature Engineering
+The following features were created:
+1.AvgCharges = TotalCharges / tenure
+2.NumServices = total number of services used
+3.ProtectionCount = number of protection-related services
+-Models Trained
+1. Logistic Regression
+Uses scaled features
+Better at identifying churn customers (higher recall)
+2. Random Forest
+Tree-based model (no scaling required)
+Captures non-linear relationships
+Model Performance
+Model	Precision  Precision   Recall    F1-score  	ROC-AUC
+Logistic Regression	0.62	    0.51 	    0.56 	     0.83
+Random Forest	      0.66	    0.48      0.56 	     0.83
+Key Insights:
+Both models achieved similar overall performance (F1 ≈ 0.56, ROC-AUC ≈ 0.83)
+Logistic Regression has higher recall, meaning it detects more churn customers
+Random Forest has higher precision, meaning fewer false positives
+For churn prediction, recall is more important, making Logistic Regression the preferred model
+************************
 ## 🗂️ Project Structure
 ```text
 Customer-Churn-Prediction/
