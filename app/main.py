@@ -1,50 +1,33 @@
 from fastapi import FastAPI
 from app.schema import CustomerInput, PredictionResponse
-from app.utils import get_risk_level, get_recommendation
-import random
+from app.utils import get_risk_level, get_recommendation, preprocess_input, FINAL_COLUMN_ORDER
 import joblib
-import os
+import pandas as pd
 
 app = FastAPI(title="Customer Churn Prediction API", version="0.1.0")
 
-# Global model variable
-# If the trained model file exists, it will be loaded at startup
-# Otherwise, the API will use temporary dummy predictions
-model = None
-
-
-@app.on_event("startup")
-def load_model():
-    """Load trained model at startup if available"""
-    global model
-    model_path = "models/churn_model.pkl"
-
-    if os.path.exists(model_path):
-        model = joblib.load(model_path)
-        print("Model loaded successfully.")
-    else:
-        print("Model not found. Using dummy predictions for now.")
+# Load trained model and scaler
+model = joblib.load("models/logistic_regression.pkl")
+scaler = joblib.load("models/scaler.pkl")
 
 
 @app.get("/")
 def root():
-    """Health check endpoint to confirm the API is running."""
+    """
+    Health check endpoint to confirm the API is running.
+    """
     return {"message": "Customer Churn API is running"}
 
 
 @app.post("/predict", response_model=PredictionResponse)
 def predict(data: CustomerInput):
     """
-    Predict customer churn risk
-
-    For now, if the real trained model is not available,
-    the API returns a dummy prediction.
+    Predict customer churn risk using the trained logistic regression model.
     """
-    if model is None:
-        prob = round(random.uniform(0, 1), 2)
-    else:
-        # Replace this later with real preprocessing + model inference
-        prob = 0.5
+    processed = preprocess_input(data)
+    input_df = pd.DataFrame([processed], columns=FINAL_COLUMN_ORDER)
+    scaled = scaler.transform(input_df)
+    prob = float(model.predict_proba(scaled)[0][1])
 
     risk = get_risk_level(prob)
     recommendation = get_recommendation(prob)

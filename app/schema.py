@@ -2,15 +2,31 @@ from pydantic import BaseModel, Field
 
 
 class CustomerInput(BaseModel):
-    """Input schema for customer churn prediction"""
-    tenure: int = Field(..., ge=0, description="Customer tenure in months")
-    monthly_charges: float = Field(..., ge=0, description="Monthly bill amount")
-    contract: str = Field(..., description="Contract type")
-    internet_service: str = Field(..., description="Type of internet service")
+    tenure: int = Field(..., ge=0)
+    MonthlyCharges: float = Field(..., ge=0)
+    TotalCharges: float = Field(..., ge=0)
+    gender: str
+    SeniorCitizen: str
+    Partner: str
+    Dependents: str
+    PhoneService: str
+    MultipleLines: str
+    InternetService: str
+    OnlineSecurity: str
+    OnlineBackup: str
+    DeviceProtection: str
+    TechSupport: str
+    StreamingTV: str
+    StreamingMovies: str
+    Contract: str
+    PaperlessBilling: str
+    PaymentMethod: str
 
 
 class PredictionResponse(BaseModel):
-    """Response schema returned by the prediction API"""
+    """
+    Response schema returned by the prediction API.
+    """
     churn_probability: float
     risk_level: str
     recommendation: str
