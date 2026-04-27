@@ -1,20 +1,20 @@
 from fastapi import FastAPI
 from app.schema import CustomerInput, PredictionResponse
-from app.utils import get_risk_level, get_recommendation, preprocess_input, FINAL_COLUMN_ORDER
-import joblib
+from app.utils import get_risk_level, get_recommendation
 import pandas as pd
+import joblib
 
 app = FastAPI(title="Customer Churn Prediction API", version="0.1.0")
 
-# Load trained model and scaler
-model = joblib.load("models/logistic_regression.pkl")
-scaler = joblib.load("models/scaler.pkl")
+# Load the full trained pipeline.
+# This pipeline already includes preprocessing, encoding, scaling, and model inference.
+pipeline = joblib.load("models/churn_pipeline.pkl")
 
 
 @app.get("/")
 def root():
     """
-    Health check endpoint to confirm the API is running.
+    Health check endpoint.
     """
     return {"message": "Customer Churn API is running"}
 
@@ -22,12 +22,10 @@ def root():
 @app.post("/predict", response_model=PredictionResponse)
 def predict(data: CustomerInput):
     """
-    Predict customer churn risk using the trained logistic regression model.
+    Predict churn probability for a customer using the trained pipeline.
     """
-    processed = preprocess_input(data)
-    input_df = pd.DataFrame([processed], columns=FINAL_COLUMN_ORDER)
-    scaled = scaler.transform(input_df)
-    prob = float(model.predict_proba(scaled)[0][1])
+    input_df = pd.DataFrame([data.model_dump()])
+    prob = float(pipeline.predict_proba(input_df)[0][1])
 
     risk = get_risk_level(prob)
     recommendation = get_recommendation(prob)
