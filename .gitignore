@@ -24,3 +24,4 @@ models/*.pkl
 
 # BUT allow this specific file
 !models/churn_pipeline.pkl
+data/raw/customer_churn_dataset_250k.csv
