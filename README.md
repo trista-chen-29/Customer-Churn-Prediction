@@ -1,4 +1,4 @@
-# Customer Churn Prediction (In Progress)
+# Customer Churn Prediction
 
 ## Team Members
 - Trista Chen — trista.chen@sjsu.edu  
@@ -19,15 +19,8 @@ This project builds a machine learning system that predicts whether a telecom cu
 - **Telco Customer Churn Dataset (Kaggle)**  
 - https://www.kaggle.com/code/bhartiprasad17/customer-churn-prediction  
 
-
-### Features
-- Demographics (gender, senior citizen, partner, dependents)  
-- Account info (tenure, contract, billing method)  
-- Services (internet, streaming, tech support, etc.)  
-- Financial data (monthly & total charges)  
-
-### Target Variable:
-- **Churn** (Yes/No)
+### Target Variable
+- **Churn (Yes/No)**
 
 ### Additional Dataset (Extension)
 - **250K Customer Churn Dataset**  
@@ -39,63 +32,38 @@ Used to evaluate model performance on a larger dataset.
 
 ## Approach
 
-### 1. Data Preprocessing
+### Data Preprocessing
 - Handle missing values  
 - Convert `TotalCharges` to numeric  
 - Remove invalid rows  
 - Encode categorical variables  
-- Scale features for logistic regression
+- Scale features for logistic regression  
 
-### 2. Feature Engineering
+### Feature Engineering
 - `AvgCharges = TotalCharges / tenure`  
 - `NumServices = number of services used`  
 - `ProtectionCount = number of protection-related services`  
 
-### 3. Model Training
+### Models Trained
 - Logistic Regression  
 - Random Forest  
-
-### 4. Model Evaluation
-- Accuracy, Precision, Recall, F1-score  
-- Confusion Matrix  
-- ROC-AUC  
-
-### 5. Deployment
-A FastAPI backend is used to:
-- Accept customer input  
-- Run predictions using a trained pipeline  
-- Return churn probability and recommendations  
 
 ---
 
 ## Exploratory Data Analysis (EDA)
 
-### Key Observations:
-- Customers with **month-to-month** contracts have the highest churn
-- Customers with **low tenure** customers are more likely to churn
-- Customers with **higher monthly charges** show higher churn tendency
-- Customers without **tech support**, **online security**, and **device protection** are more likely to churn
-- **Fiber optic** users show higher churn behavior
+### Key Observations
+- Month-to-month contracts have the highest churn  
+- Low tenure customers churn more  
+- Higher monthly charges increase churn likelihood  
+- Lack of tech support/security correlates with churn  
+- Fiber optic users show higher churn behavior  
 
 See: `notebooks/eda.ipynb`
 
 ---
 
-## Model Development
-
-### Models Trained
-
-#### Logistic Regression
-- Uses scaled features
-- Achieved slightly better recall
-- Better suited for identifying customers at risk of churn
-
-#### Random Forest
-- Does not require scaling
-- Captures non-linear relationships
-- Achieved slightly higher precision
-
-### Model Results
+### Model Results (Baseline Dataset)
 
 | Model | Precision | Recall | F1-score | ROC-AUC |
 |------|-----------|--------|----------|---------|
@@ -113,37 +81,26 @@ See: `notebooks/eda.ipynb`
 
 ---
 
-## Technologies Used
-
-- Python
-- Scikit-learn
-- FastAPI
-- Pandas
-- NumPy
-- Matplotlib
-
----
-
 ## Deployment (FastAPI)
 
-We saved a **complete scikit-learn pipeline** (`churn_pipeline.pkl`) that includes:
+A FastAPI backend is used to serve predictions.
+
+We saved a **complete scikit-learn pipeline (`churn_pipeline.pkl`)** that includes:
 - preprocessing  
 - encoding  
 - scaling  
 - trained model  
 
-The backend loads this pipeline and performs real-time predictions.
+The API uses this pipeline for real-time inference.
 
 ---
 
 ## API 
 
 ### Endpoint
-
 `POST /predict`
 
-### Example input
-
+### Example Input
 ```json
 {
   "gender": "Male",
@@ -169,7 +126,6 @@ The backend loads this pipeline and performs real-time predictions.
 ```
 
 ### Example output
-
 ```json
 {
   "churn_probability": 0.60,
@@ -180,14 +136,37 @@ The backend loads this pipeline and performs real-time predictions.
 
 ---
 
+## Extended Experiment (250K Dataset)
+
+To evaluate scalability, we trained the same model on a larger dataset with 250,000 records.
+
+### Result
+- Accuracy: 0.83
+- Precision (churn): 0.74
+- Recall (churn): 0.70
+- F1-score: 0.72
+- ROC-AUC: 0.90
+
+### Comparison
+| Metric   | Baseline | 250K Dataset |
+| -------- | -------- | ------------ |
+| F1-score | 0.56     | **0.72**     |
+| Recall   | 0.51     | **0.70**     |
+| ROC-AUC  | 0.83     | **0.90**     |
+
+### Key Insight
+Performance improved significantly with more data, indicating that the model generalizes better and benefits from increased dataset size and richer features.
+
+---
+
 ## Project Structure
 
 ```text
 Customer-Churn-Prediction/
 ├── app/                    # FastAPI backend
 ├── data/                   # Dataset files
-├── models/                 # Saved model (pipeline)
-├── notebooks/              # EDA
+├── models/                 # Saved pipeline model
+├── notebooks/              # EDA and experiments
 ├── src/                    # Training scripts
 ├── requirements.txt
 └── README.md
@@ -218,19 +197,8 @@ http://127.0.0.1:8000/docs
 - Selected Logistic Regression
 - Built and saved full pipeline
 - Integrated model into FastAPI backend
-- Tested API with real predictions
-
----
-
-## Extended Experiment
-
-We will train a model on a larger dataset (250K records) to:
-- compare performance
-- evaluate scalability
-
-### Result
-
-
+- Tested API successfully
+- Evaluated model on large-scale dataset
 
 ---
 
