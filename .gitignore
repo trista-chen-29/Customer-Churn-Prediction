@@ -19,4 +19,8 @@ data/*
 !data/raw/*.csv
 !data/processed/*.csv
 
+# Ignore all models
 models/*.pkl
+
+# BUT allow this specific file
+!models/churn_pipeline.pkl

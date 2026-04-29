@@ -1,85 +1,74 @@
-# 📊 Customer Churn Prediction (In Progress)
+# Customer Churn Prediction (In Progress)
 
-## 👥 Team Members
+## Team Members
 - Trista Chen — trista.chen@sjsu.edu  
 - Sonal Rana — sonal.rana@sjsu.edu  
 
 ---
 
-## 🧩 Problem Statement
-Customer churn is a major challenge for telecom companies, as losing existing customers leads to significant revenue loss and higher costs to acquire new customers.
+## Problem Statement
+Customer churn is a major challenge for telecom companies, as losing existing customers leads to significant revenue loss and higher acquisition costs.
 
-This project builds a machine learning system that predicts whether a telecom customer is likely to churn based on demographic information, service usage, and account details. The goal is to support data-driven retention strategies and reduce customer loss.
+This project builds a machine learning system that predicts whether a telecom customer is likely to churn based on demographic information, service usage, and account details. The goal is to support data-driven retention strategies.
 
 ---
 
-## 📂 Dataset
+## Dataset
 
 ### Primary Dataset
-We used the **Telco Customer Churn** dataset from Kaggle:
+- **Telco Customer Churn Dataset (Kaggle)**  
+- https://www.kaggle.com/code/bhartiprasad17/customer-churn-prediction  
 
-- **Source:** Customer Churn Prediction Dataset  
-- **Link:** https://www.kaggle.com/code/bhartiprasad17/customer-churn-prediction  
 
-### Features include:
-- Customer demographics (gender, senior citizen, partner, dependents)
-- Account information (tenure, contract type, billing method)
-- Services used (internet service, streaming, tech support, etc.)
-- Financial data (monthly charges, total charges)
+### Features
+- Demographics (gender, senior citizen, partner, dependents)  
+- Account info (tenure, contract, billing method)  
+- Services (internet, streaming, tech support, etc.)  
+- Financial data (monthly & total charges)  
 
 ### Target Variable:
 - **Churn** (Yes/No)
 
-### Additional Dataset (Planned)
-To extend this project beyond a basic baseline, we plan to experiment with a larger and more complex dataset:
+### Additional Dataset (Extension)
+- **250K Customer Churn Dataset**  
+- https://www.kaggle.com/datasets/rhythmghai/250k-customer-churn-prediction-dataset  
 
-- **Source:** 250K Customer Churn Prediction Dataset
-- **Link:** https://www.kaggle.com/datasets/rhythmghai/250k-customer-churn-prediction-dataset  
-
-This dataset will allow us to:
-- Evaluate model performance on a larger, more realistic dataset  
-- Compare results with the baseline dataset  
-- Improve generalization and robustness of the model  
+Used to evaluate model performance on a larger dataset.
 
 ---
 
-## ⚙️ Planned Approach
+## Approach
 
 ### 1. Data Preprocessing
-- Handle missing values
-- Convert `TotalCharges` to numeric
-- Remove invalid rows
-- Encode categorical features using one-hot encoding
+- Handle missing values  
+- Convert `TotalCharges` to numeric  
+- Remove invalid rows  
+- Encode categorical variables  
 - Scale features for logistic regression
 
-### 2. Exploratory Data Analysis (EDA)
-- Analyze patterns related to churn
-- Visualize relationships between key features and churn behavior
+### 2. Feature Engineering
+- `AvgCharges = TotalCharges / tenure`  
+- `NumServices = number of services used`  
+- `ProtectionCount = number of protection-related services`  
 
-### 3. Feature Engineering
-The following new features were created:
-- `AvgCharges` = `TotalCharges / tenure`
-- `NumServices` = total number of services used
-- `ProtectionCount` = number of protection-related services
+### 3. Model Training
+- Logistic Regression  
+- Random Forest  
 
-### 4. Model Development
-Two classification models were trained:
-- **Logistic Regression**
-- **Random Forest**
+### 4. Model Evaluation
+- Accuracy, Precision, Recall, F1-score  
+- Confusion Matrix  
+- ROC-AUC  
 
 ### 5. Deployment
-A **FastAPI** backend was built to:
-- Accept customer information as input
-- Preprocess input data to match training features
-- Return churn probability
-- Classify customer risk level
-- Provide a retention recommendation  
+A FastAPI backend is used to:
+- Accept customer input  
+- Run predictions using a trained pipeline  
+- Return churn probability and recommendations  
 
 ---
 
-## 📊 Exploratory Data Analysis (EDA)
-
-EDA was performed to understand patterns influencing churn.
+## Exploratory Data Analysis (EDA)
 
 ### Key Observations:
 - Customers with **month-to-month** contracts have the highest churn
@@ -92,7 +81,7 @@ See: `notebooks/eda.ipynb`
 
 ---
 
-## 🤖 Model Development
+## Model Development
 
 ### Models Trained
 
@@ -106,7 +95,7 @@ See: `notebooks/eda.ipynb`
 - Captures non-linear relationships
 - Achieved slightly higher precision
 
-### Model Performance
+### Model Results
 
 | Model | Precision | Recall | F1-score | ROC-AUC |
 |------|-----------|--------|----------|---------|
@@ -124,31 +113,7 @@ See: `notebooks/eda.ipynb`
 
 ---
 
-## 🗂️ Project Structure
-
-```text
-Customer-Churn-Prediction/
-│
-├── app/                    # FastAPI backend
-│   ├── main.py
-│   ├── schema.py
-│   ├── utils.py
-│   └── tests/
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── models/                 # Saved trained models
-├── notebooks/              # EDA notebook
-├── src/                    # Training notebook / scripts
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 🛠️ Technologies Used
+## Technologies Used
 
 - Python
 - Scikit-learn
@@ -159,55 +124,33 @@ Customer-Churn-Prediction/
 
 ---
 
-## ▶️ How to Run
+## Deployment (FastAPI)
 
-### 1. Create and activate the environment
-Use the Python 3.11 virtual environment:
+We saved a **complete scikit-learn pipeline** (`churn_pipeline.pkl`) that includes:
+- preprocessing  
+- encoding  
+- scaling  
+- trained model  
 
-```bash
-python3.11 -m venv venv311
-source venv311/bin/activate
-```
-
-### 2. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Run the API
-
-```bash
-uvicorn app.main:app --reload
-```
-
-Then open:
-```
-http://127.0.0.1:8000/docs
-```
+The backend loads this pipeline and performs real-time predictions.
 
 ---
 
-## API Endpoint
+## API 
 
-### **POST** `/predict`
+### Endpoint
 
-This endpoint accepts customer information and returns:
-- churn probability
-- risk level
-- retention recommendation
+`POST /predict`
 
 ### Example input
 
 ```json
 {
-  "tenure": 12,
-  "MonthlyCharges": 79.99,
-  "TotalCharges": 959.88,
   "gender": "Male",
   "SeniorCitizen": "No",
   "Partner": "Yes",
   "Dependents": "No",
+  "tenure": 12,
   "PhoneService": "Yes",
   "MultipleLines": "No",
   "InternetService": "Fiber optic",
@@ -219,7 +162,9 @@ This endpoint accepts customer information and returns:
   "StreamingMovies": "No",
   "Contract": "Month-to-month",
   "PaperlessBilling": "Yes",
-  "PaymentMethod": "Electronic check"
+  "PaymentMethod": "Electronic check",
+  "MonthlyCharges": 79.99,
+  "TotalCharges": 959.88
 }
 ```
 
@@ -235,23 +180,63 @@ This endpoint accepts customer information and returns:
 
 ---
 
-## 🚀 Current Implementation Progress
+## Project Structure
 
-- Created shared GitHub repository
-- Added EDA notebook and data preprocessing workflow
-- Trained Logistic Regression and Random Forest models
-- Saved trained models and scaler
-- Built FastAPI backend for prediction
-- Integrated Logistic Regression model into the API
-- Added preprocessing and feature mapping for real-time predictions
-- Successfully tested the /predict endpoint
+```text
+Customer-Churn-Prediction/
+├── app/                    # FastAPI backend
+├── data/                   # Dataset files
+├── models/                 # Saved model (pipeline)
+├── notebooks/              # EDA
+├── src/                    # Training scripts
+├── requirements.txt
+└── README.md
+```
 
 ---
 
-## 🔜 Future Work
+## How to Run
 
-- Tune model hyperparameters
-- Experiment with the larger churn dataset
-- Improve API input validation and usability
-- Add optional frontend interface
-- Deploy the application online
+```bash
+python3.11 -m venv venv311
+source venv311/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Open:
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Current Implementation Progress
+
+- Completed EDA and feature engineering
+- Trained and evaluated models
+- Selected Logistic Regression
+- Built and saved full pipeline
+- Integrated model into FastAPI backend
+- Tested API with real predictions
+
+---
+
+## Extended Experiment
+
+We will train a model on a larger dataset (250K records) to:
+- compare performance
+- evaluate scalability
+
+### Result
+
+
+
+---
+
+## Future Work
+
+- Hyperparameter tuning
+- Improve validation and UX
+- Add frontend interface
+- Deploy application

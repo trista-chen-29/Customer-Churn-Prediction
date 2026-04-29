@@ -2,25 +2,28 @@ from pydantic import BaseModel, Field
 
 
 class CustomerInput(BaseModel):
-    tenure: int = Field(..., ge=0)
-    MonthlyCharges: float = Field(..., ge=0)
-    TotalCharges: float = Field(..., ge=0)
-    gender: str
-    SeniorCitizen: str
-    Partner: str
-    Dependents: str
-    PhoneService: str
-    MultipleLines: str
-    InternetService: str
-    OnlineSecurity: str
-    OnlineBackup: str
-    DeviceProtection: str
-    TechSupport: str
-    StreamingTV: str
-    StreamingMovies: str
-    Contract: str
-    PaperlessBilling: str
-    PaymentMethod: str
+    """
+    Input schema for customer churn prediction.
+    """
+    gender: str = Field(..., description="Customer gender")
+    SeniorCitizen: str = Field(..., description="Whether the customer is a senior citizen: Yes or No")
+    Partner: str = Field(..., description="Whether the customer has a partner: Yes or No")
+    Dependents: str = Field(..., description="Whether the customer has dependents: Yes or No")
+    tenure: int = Field(..., ge=0, description="Customer tenure in months")
+    PhoneService: str = Field(..., description="Whether the customer has phone service: Yes or No")
+    MultipleLines: str = Field(..., description="Multiple lines status")
+    InternetService: str = Field(..., description="Internet service type")
+    OnlineSecurity: str = Field(..., description="Online security service status")
+    OnlineBackup: str = Field(..., description="Online backup service status")
+    DeviceProtection: str = Field(..., description="Device protection status")
+    TechSupport: str = Field(..., description="Tech support status")
+    StreamingTV: str = Field(..., description="Streaming TV subscription status")
+    StreamingMovies: str = Field(..., description="Streaming movies subscription status")
+    Contract: str = Field(..., description="Contract type")
+    PaperlessBilling: str = Field(..., description="Paperless billing: Yes or No")
+    PaymentMethod: str = Field(..., description="Payment method")
+    MonthlyCharges: float = Field(..., ge=0, description="Monthly charges")
+    TotalCharges: float = Field(..., ge=0, description="Total charges")
 
 
 class PredictionResponse(BaseModel):
