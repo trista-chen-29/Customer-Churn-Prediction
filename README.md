@@ -65,10 +65,10 @@ See: `notebooks/eda.ipynb`
 
 ### Model Results (Baseline Dataset)
 
-| Model | Precision | Recall | F1-score | ROC-AUC |
-|------|-----------|--------|----------|---------|
-| Logistic Regression | 0.50 | 0.79 | 0.52 | 0.83 |
-| Random Forest | 0.63 | 0.44 | 0.52 | 0.83 |
+| Model | Precision | Recall | F1-score |
+|------|-----------|--------|----------|
+| Logistic Regression | 0.50 | 0.79 | 0.52 |
+| Random Forest | 0.63 | 0.44 | 0.52 |
 | Gradient Boost | .64 | .48 | 0.55 | 
 
 ### Key Insights:
