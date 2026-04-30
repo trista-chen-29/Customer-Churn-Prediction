@@ -150,9 +150,9 @@ To evaluate scalability, we trained the same model on a larger dataset with 250,
 ### Comparison
 | Metric   | Baseline | 250K Dataset |
 | -------- | -------- | ------------ |
-| F1-score | 0.56     | **0.72**     |
-| Recall   | 0.51     | **0.70**     |
-| ROC-AUC  | 0.83     | **0.90**     |
+| F1-score | 0.52     | **0.72**     |
+| Recall   | 0.79     | **0.70**     |
+| ROC-AUC  | --     | **0.90**     |
 
 ### Key Insight
 Performance improved significantly with more data, indicating that the model generalizes better and benefits from increased dataset size and richer features.
