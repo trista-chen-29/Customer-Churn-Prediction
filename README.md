@@ -46,8 +46,8 @@ Used to evaluate model performance on a larger dataset.
 
 ### Models Trained
 - Logistic Regression  
-- Random Forest  
-
+- Random Forest Classifier
+- Gradient Boosting Classifier
 ---
 
 ## Exploratory Data Analysis (EDA)
@@ -65,16 +65,16 @@ See: `notebooks/eda.ipynb`
 
 ### Model Results (Baseline Dataset)
 
-| Model | Precision | Recall | F1-score | ROC-AUC |
-|------|-----------|--------|----------|---------|
-| Logistic Regression | 0.62 | 0.51 | 0.56 | 0.83 |
-| Random Forest | 0.66 | 0.48 | 0.56 | 0.83 |
+| Model | Precision | Recall | F1-score |
+|------|-----------|--------|----------|
+| Logistic Regression | 0.50 | 0.79 | 0.52 |
+| Random Forest | 0.63 | 0.44 | 0.52 |
+| Gradient Boost | .64 | .48 | 0.55 | 
 
 ### Key Insights:
-- Both models achieved similar overall performance (F1 ≈ 0.56, ROC-AUC ≈ 0.83)
-- Logistic Regression has higher recall, meaning it detects more churn customers
-- Random Forest has higher precision, meaning fewer false positives
-- For churn prediction, recall is more important, making Logistic Regression the preferred model
+- Logistic Regression performed best in terms of recall (79%), it correctly identified most customers who actually churned. 
+- This is important because minimizing missed churn cases (false negatives) is critical in customer retention scenarios.
+- Random Forest and Gradient Boosting achieved higher precision (63% and 64%), meaning their churn predictions were more       accurate when they did predict churn, but they missed a larger portion of actual churners (higher false negatives).
 
 ### Final Model Choice
 **Logistic Regression** was selected for API deployment because recall is especially important in churn prediction, where identifying at-risk customers matters more than minimizing false positives.
@@ -150,9 +150,9 @@ To evaluate scalability, we trained the same model on a larger dataset with 250,
 ### Comparison
 | Metric   | Baseline | 250K Dataset |
 | -------- | -------- | ------------ |
-| F1-score | 0.56     | **0.72**     |
-| Recall   | 0.51     | **0.70**     |
-| ROC-AUC  | 0.83     | **0.90**     |
+| F1-score | 0.52     | **0.72**     |
+| Recall   | 0.79     | **0.70**     |
+| ROC-AUC  | --     | **0.90**     |
 
 ### Key Insight
 Performance improved significantly with more data, indicating that the model generalizes better and benefits from increased dataset size and richer features.
